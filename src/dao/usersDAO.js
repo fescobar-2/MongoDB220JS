@@ -81,14 +81,15 @@ export default class UsersDAO {
    * @param {string} jwt - A JSON web token representing the user's claims
    * @returns {DAOResponse} Returns either a "success" or an "error" Object
    */
+    
   static async loginUser(email, jwt) {
     try {
       // TODO Ticket: User Management
       // Use an UPSERT statement to update the "jwt" field in the document,
       // matching the "user_id" field with the email passed to this function.
-      user_id_login = getUser(email)._id
+      
       await sessions.updateOne(
-        { user_id: user_id_login },
+        { user_id: email },
         { $set: { jwt: jwt } },
         { upsert: true }
       )
@@ -108,7 +109,7 @@ export default class UsersDAO {
     try {
       // TODO Ticket: User Management
       // Delete the document in the `sessions` collection matching the email.
-      await sessions.deleteOne({ someField: "someValue" })
+      await sessions.deleteOne({ user_id: email })
       return { success: true }
     } catch (e) {
       console.error(`Error occurred while logging out user, ${e}`)
@@ -126,7 +127,7 @@ export default class UsersDAO {
     try {
       // TODO Ticket: User Management
       // Retrieve the session document corresponding with the user's email.
-      return sessions.findOne({ someField: "someValue" })
+      return sessions.findOne({ user_id: email })
     } catch (e) {
       console.error(`Error occurred while retrieving user session, ${e}`)
       return null
