@@ -153,7 +153,7 @@ export default class CommentsDAO {
 
       // TODO Ticket: User Report
       // Use a more durable Read Concern here to make sure this data is not stale.
-      const readConcern = comments.readConcern
+      const readConcern =  { level: "majority" }
 
       const aggregateResult = await comments.aggregate(pipeline, {
         readConcern,
