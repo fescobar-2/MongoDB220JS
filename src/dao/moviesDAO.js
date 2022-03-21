@@ -21,21 +21,22 @@ export default class MoviesDAO {
   }
 
   /**
-   * Retrieves the connection pool size, write concern and user roles on the
-   * current client.
-   * @returns {Promise<ConfigurationResult>} An object with configuration details.
-   */
-  static async getConfiguration() {
-    const roleInfo = await mflix.command({ connectionStatus: 1 })
-    const authInfo = roleInfo.authInfo.authenticatedUserRoles[0]
-    const { poolSize, wtimeout } = movies.s.db.serverConfig.s.options
-    let response = {
-      poolSize,
-      wtimeout,
-      authInfo,
-    }
-    return response
-  }
+
+Retrieves the connection pool size, write concern timeout and user roles on the
+current client.
+@returns {Promise} An object with configuration details.
+*/
+static async getConfiguration() {
+const roleInfo = await mflix.command({ connectionStatus: 1 })
+const authInfo = roleInfo.authInfo.authenticatedUserRoles[0]
+const { poolSize, writeConcern } = movies.s.db.serverConfig.s.options
+let response = {
+  poolSize,
+  wtimeout: writeConcern.wtimeout,
+  authInfo,
+}
+return response
+}
 
   /**
    * Finds and returns movies originating from one or more countries.
