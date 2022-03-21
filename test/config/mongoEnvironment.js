@@ -7,12 +7,7 @@ module.exports = class MongoEnvironment extends NodeEnvironment {
         process.env.MFLIX_DB_URI,
         // TODO: Connection Pooling
         // Set the poolSize to 50 connections.
-        {
-          useNewUrlParser: true,
-          useUnifiedTopology: true,
-          poolSize: 50,
-          writeConcern: {wtimeout: 2500}
-        }
+        { writeConcern: { wtimeout: 2500}, poolSize: 50, useNewUrlParser: true }
       )
       await super.setup()
     }
